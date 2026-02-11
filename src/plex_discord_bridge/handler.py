@@ -44,7 +44,10 @@ def _build_message(payload: PlexWebhookPayload) -> str:
     title = _format_title(payload)
     imdb_url = _extract_imdb_url(payload.Metadata)
 
-    parts = [f"**{payload.Account.title}** {verb} **{title}**"]
+    if payload.event == "library.new":
+        parts = [f"**{title}** {verb}"]
+    else:
+        parts = [f"**{payload.Account.title}** {verb} **{title}**"]
 
     if imdb_url:
         parts.append(imdb_url)

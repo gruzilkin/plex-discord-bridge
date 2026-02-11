@@ -104,8 +104,8 @@ async def test_library_new(mock_post, client: TestClient):
     assert resp.status == 200
 
     msg = mock_post.call_args.args[0]
-    assert "added to library" in msg
-    assert "**The Bear**" in msg
+    assert msg.startswith("**The Bear** added to library")
+    assert "Sergey" not in msg
 
 
 # -- filtering --
