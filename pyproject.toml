@@ -1,0 +1,26 @@
+[project]
+name = "plex-discord-bridge"
+version = "0.1.0"
+description = "Stateless relay from Plex webhooks to Discord embeds"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.11,<4",
+    "pydantic>=2.10,<3",
+    "pydantic-settings>=2.7,<3",
+    "opentelemetry-sdk>=1.20",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.20",
+    "python-json-logger>=2.0",
+]
+
+[project.scripts]
+plex-discord-bridge = "plex_discord_bridge.__main__:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.25"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
