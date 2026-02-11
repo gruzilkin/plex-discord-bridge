@@ -98,6 +98,7 @@ async def test_library_new(mock_post, client: TestClient):
             librarySectionType="movie",
             type="movie",
             title="The Bear",
+            Guid=[PlexGuid(id="imdb://tt1234567")],
         ),
     )
     resp = await _post_payload(client, payload)
@@ -165,19 +166,16 @@ async def test_missing_payload_part_returns_400(client: TestClient):
 
 @pytest.mark.asyncio
 @patch("plex_discord_bridge.handler._post_to_discord", new_callable=AsyncMock)
-async def test_no_imdb_guid_omits_link(mock_post, client: TestClient):
+async def test_no_guid_not_forwarded(mock_post, client: TestClient):
     payload = PlexWebhookPayload(
         event="media.play",
         Account=PlexAccount(title="Sergey"),
         Metadata=PlexMetadata(
             librarySectionType="movie",
             type="movie",
-            title="Inception",
-            Guid=[],
+            title="PXL_20260208_054218368",
         ),
     )
     resp = await _post_payload(client, payload)
     assert resp.status == 200
-
-    msg = mock_post.call_args.args[0]
-    assert "imdb.com" not in msg
+    mock_post.assert_not_called()

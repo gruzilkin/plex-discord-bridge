@@ -97,6 +97,9 @@ async def handle_webhook(request: web.Request) -> web.Response:
     if payload.Metadata.librarySectionType not in ALLOWED_LIBRARY_TYPES:
         return web.Response(status=200)
 
+    if not payload.Metadata.Guid:
+        return web.Response(status=200)
+
     message = _build_message(payload)
     log.info("Discord message: %s", message)
     await _post_to_discord(message)
