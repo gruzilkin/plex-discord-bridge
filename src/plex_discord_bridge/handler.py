@@ -89,6 +89,8 @@ async def handle_webhook(request: web.Request) -> web.Response:
         log.warning("Invalid payload: %s", exc)
         return web.Response(status=400, text="invalid payload")
 
+    log.info("Plex webhook: %s", payload.model_dump_json())
+
     if payload.event not in ALLOWED_EVENTS:
         return web.Response(status=200)
 
@@ -96,5 +98,6 @@ async def handle_webhook(request: web.Request) -> web.Response:
         return web.Response(status=200)
 
     message = _build_message(payload)
+    log.info("Discord message: %s", message)
     await _post_to_discord(message)
     return web.Response(status=200)
